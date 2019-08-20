@@ -14,6 +14,18 @@ int main(int argc,char** argv){
                 manuel();
             }
         }
+        if(!strcmp(*(argv + 1),"analyse")){
+            if(argc == 5 || argc == 6){ //bon nombre d'arguments
+                if(argc == 5 || (argc == 6 && !strcmp(*(argv + 5),"1"))){ // 1 seule thread
+                    uint64_t start,stop = 0;
+                    sscanf(*(argv + 3),"%lu",&start);
+                    sscanf(*(argv + 4),"%lu",&stop);
+                    sampleAnalyse(*(argv + 2),start,stop,1,0);
+                }
+            }else{
+                manuel();
+            }
+        }
     }else{ //pas assez d'arguments
         manuel();
     }

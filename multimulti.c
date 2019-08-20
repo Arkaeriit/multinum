@@ -21,14 +21,29 @@ int howManyTimes(uint64_t val){
 
 int writeLine(char* line,char* file){
     FILE* fpnt;
-    if( (fptr = fopen(file,"a")) == NULL){
+    if( (fpnt = fopen(file,"a")) == NULL){
         fprintf(stderr,"Error: impossible to write in %s.\n",file);
         return 1;
     }else{
         fprintf(fpnt,"%s\n",line);
-        fclose(fptr);
+        fclose(fpnt);
         return 0;
     }
 }
 
-//void sampleAnnalyse(char* file,uint64_t start,uint64_t stop
+int sampleAnalyse(char* file,uint64_t start,uint64_t stop,int threadmax,int threadNumber){
+    int max=0; //nombre maximum de reductions à faire
+    char* bufferline = malloc(sizeof(char) * 256); //buffer poour céer les lignes à écrire dans le fichier
+    for(uint64_t i = start;i<stop;i++){
+        if(i%threadmax == threadNumber){ //On est à un nombre que l'on doit faire
+            int act = howManyTimes(i);
+            if(act > max){ //On a un nouveau maximum donc on le documente
+                max = act;
+                sprintf(bufferline,"%lu %i",i,act);
+                writeLine(bufferline,file);
+            }
+        }
+    }
+    return 0;
+}
+
