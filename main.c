@@ -1,4 +1,5 @@
 #include "multimulti.h"
+#include "multithreading.h"
 
 void manuel();
 
@@ -21,6 +22,13 @@ int main(int argc,char** argv){
                     sscanf(*(argv + 3),"%lu",&start);
                     sscanf(*(argv + 4),"%lu",&stop);
                     sampleAnalyse(*(argv + 2),start,stop,1,0);
+                }else{ //multithreading
+                    uint64_t start,stop = 0;
+                    sscanf(*(argv + 3),"%lu",&start);
+                    sscanf(*(argv + 4),"%lu",&stop);
+                    int maxthread = 0;
+                sscanf(*(argv + 5),"%i",&maxthread);
+                    launchAnalyzes(*(argv + 2),start,stop,maxthread);
                 }
             }else{
                 manuel();
