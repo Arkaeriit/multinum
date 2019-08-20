@@ -16,6 +16,7 @@ int howManyTimes(uint64_t val){
         reduce(nombre);
         tours++;
     }
+    free(nombre);
     return tours;
 }
 
@@ -44,6 +45,7 @@ int sampleAnalyse(char* file,uint64_t start,uint64_t stop,int threadmax,int thre
             }
         }
     }
+    free(bufferline);
     return 0;
 }
 

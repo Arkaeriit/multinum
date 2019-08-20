@@ -17,7 +17,7 @@ void launchAnalyzes(char* file,uint64_t start,uint64_t stop,int threadmax){
         (threadsArg + i)-> threadNumber = i;
         pthread_create(&thread[i],NULL,analyzeWraper,(void*) (threadsArg + i));
     }
-
+    free(threadsArg);
     for(int i=0;i<threadmax;i++){
         pthread_join(thread[i],NULL);
     }
