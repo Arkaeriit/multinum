@@ -15,7 +15,7 @@ int main(int argc,char** argv){
                 manuel();
             }
         }
-        if(!strcmp(*(argv + 1),"analyse")){
+        if(!strcmp(*(argv + 1),"analyze")){
             if(argc == 5 || argc == 6){ //bon nombre d'arguments
                 if(argc == 5 || (argc == 6 && !strcmp(*(argv + 5),"1"))){ // 1 seule thread
                     uint64_t start,stop = 0;
@@ -41,6 +41,6 @@ int main(int argc,char** argv){
 }
 
 void manuel(){
-    printf("nope\n");
+    printf("Usage: ./multinum [option] <parameters...>\n\nAvailable options:\n* reduce: Use './multinum reduce [number]' to know how many times you have to reduce 'number' to get a 1 digit number.\n* analyze: Use './multinum analyze [file] [start] [stop] <threads>' to know the witch numbers take the more time to be reduced to a single digit number between 'start' and 'stop'. The results will be stored in 'file' where each interesting number will be stored and the number of steps go reduce them to 1 digit number will be written next to them after a space. The calculation will be spread between 'threads' various threads.\n");
 }
 

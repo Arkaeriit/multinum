@@ -7,10 +7,10 @@ SRC= main.c           \
 
 OBJ=$(SRC:.c=.o)
 
-all : multiReduc
+all : multinum
 
-multiReduc : $(OBJ)
-	gcc $(OBJ) $(LIBS) -o multiReduc
+multinum : $(OBJ)
+	gcc $(OBJ) $(LIBS) -o multinum
 
 objets : $(SRC)
 	gcc -c $(SRC) $(CFLAGS) -o $(OBJ)
@@ -18,4 +18,5 @@ objets : $(SRC)
 clean :
 	rm -f *.o
 	rm -f multiReduc
+	rm -f multinum
 
