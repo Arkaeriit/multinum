@@ -49,39 +49,10 @@ int sampleAnalyse(char* file,uint64_t start,uint64_t stop,int threadmax,int thre
     return 0;
 }
 
-void palindromes(char* nombre,int chiffreAct,int tailleMax,int maxReduce){
-    if(strlen(nombre) == tailleMax){ //On a construit le nombre
-        /*int red = howManyTimes(nombre);
-        if(red > maxReduce){
-            maxReduce = red;
-            char* line = malloc(sizeof(char) * 256);
-            sprintf(line,"%s %i",nombre,red);
-            writeLine(line,"/dev/stdout"); //TODO : change
-            free(line);
-        }*/ printf("%s\n",nombre);
-    }else{ //On construit recursivement le nombre
-        if(chiffreAct < 10){ //Si on a déja placé tout les noombres cela ne sert à rien de continuer
-            for(int i = 0;i < tailleMax + (strlen(nombre) );i++){ //i represente le nombre de fois que l'on va ajouter nombreAct à nombre
-                //char* nombreCopy = malloc(sizeof(char) * 22);
-                //memcpy(nombreCopy,nombre,strlen(nombre));
-                for(int j = 0;j < i;j++){ //On ajoute i fois nombreActuel à nombre
-                    *(nombre + strlen(nombre)) = (char) chiffreAct + 48; //On met ce que l'on veut à la fin de nombre
-                }
-                palindromes(nombre,chiffreAct + 1,tailleMax,maxReduce); //On continue de remplir
-                for(int j=0;j<i;j++){
-                    *(nombre + strlen(nombre) - 1) = 0;
-                //free(nombreCopy);
-                }
-            }
-        }else{
-            chiffreAct = 0;
-        }
-    }
-}
-
+/*On créer toutes les combinaisons possibles de manière non récursives*/
 #define limite (tailleMax - strlen(number) + 1)
-#define sauverlesmeubles if(limite>tailleMax+4) return;if(strlen(number) != tailleMax)
-void palindromesLoop(combiARG* args){
+#define sauverlesmeubles if(limite>tailleMax+4) return;if(strlen(number) != tailleMax) //le premier if sert à éviter certains bugs et le exième à accélérer la chose pour éviter de faire es tours pour rien
+void combinaisonLoop(combiARG* args){
     int tailleMax = args->nombreChiffre;
     char* number = malloc(sizeof(char) * 22);
     for(int num2 = 0;num2 < limite;num2++){
@@ -143,23 +114,34 @@ void rmChar(char* string,int combien){
     }
 }
 
+void combiAnalyze(char* file,char** listCombi,uint64_t nombreCombinaisons){
+   int max = 0;
+   char* copie = malloc(sizeof(char) * 22); //Comme howManyTime détruit notre nombre on doit le copier
+   for(uint64_t i = 0;i < nombreCombinaisons;i++){
+       strcpy(copie,*(listCombi + i));
+       int act = howManyTimes(*(listCombi + i));
+       if(act > max){
+           max = act;
+           char* line = malloc(sizeof(char) * 100);
+           sprintf(line,"%s %i",copie,act);
+           writeLine(line,file);
+           free(line);
+        }
+    }   
+}
+
 void test(){
     combiARG* comb = getCombinaisons(11);
-    printf("nombre de combinaisons : %i\n",comb->nombreCombinaisons);
-    printf("%s\n",*(comb->combinaisons + comb->nombreCombinaisons - 2));
-    printf("%s\n",*(comb->combinaisons + comb->nombreCombinaisons - 4));
-    printf("%s\n",*(comb->combinaisons + comb->nombreCombinaisons - 3));
-    printf("%s\n",*(comb->combinaisons + comb->nombreCombinaisons - 1));
+    combiAnalyze("test.txt",comb->combinaisons,comb->nombreCombinaisons);
 }
 
 combiARG* getCombinaisons(int digits){
     uint64_t combinaisonsPossibles = ((factorial(8 + digits - 1)) / (factorial(digits) * factorial(8 - 1)));
-    printf("%lu\n",combinaisonsPossibles);
     combiARG* args = malloc(sizeof(combiARG));
     args->nombreChiffre = digits;
     args->nombreCombinaisons = 0; //nombre d'éléments dans la liste suivante
     args->combinaisons = (char**) malloc(sizeof(char*) * combinaisonsPossibles);
-    palindromesLoop(args);
+    combinaisonLoop(args);
     return args;
 }
 
